@@ -42,7 +42,7 @@
     "build": "npm run clean && tsc --outDir lib",
     "test": "npm run build && ava",
     "prepublishOnly": "npm run build",
-    "release": "npm run build && npm publish --provenance --access public"
+    "release": "npm publish --provenance --access public"
   },
   "keywords": [
     "ip",
