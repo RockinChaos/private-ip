@@ -1,6 +1,6 @@
 {
-  "name": "private-ip",
   "version": "3.0.2",
+  "name": "@rockinchaos/private-ip",
   "description": "Check if IP address is private.",
   "exports": {
     ".": {
@@ -12,10 +12,10 @@
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/frenchbread/private-ip.git"
+    "url": "git+https://github.com/RockinChaos/private-ip.git"
   },
-  "bugs": "https://github.com/frenchbread/private-ip/issues",
-  "homepage": "https://github.com/frenchbread/private-ip#readme",
+  "bugs": "https://github.com/RockinChaos/private-ip/issues",
+  "homepage": "https://github.com/RockinChaos/private-ip#readme",
   "authors": [
     "Damir Mustafin <frenchthebread@gmail.com>",
     "Sick.Codes <https://twitter.com/sickcodes>",
@@ -30,6 +30,10 @@
     {
       "name": "Aravindha Hariharan M",
       "url": "https://www.linkedin.com/in/aravindha1234u/"
+    },
+    {
+      "name": "RockinChaos",
+      "url": "https://github.com/RockinChaos"
     }
   ],
   "license": "MIT",
