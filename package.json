@@ -71,7 +71,9 @@
     "files": [
       "test/**/*.test.ts"
     ],
-    "extensions": ["ts"],
+    "extensions": [
+      "ts"
+    ],
     "nodeArguments": [
       "--import=tsx"
     ]
@@ -80,6 +82,9 @@
     "node": ">=18"
   },
   "pnpm": {
-    "onlyBuiltDependencies": []
+    "onlyBuiltDependencies": [],
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
