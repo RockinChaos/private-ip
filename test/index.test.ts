@@ -1,7 +1,7 @@
 import test from 'ava'
-import is_ip_private from './index.js'
+import is_ip_private from '../index.js'
 
-const pub_ips = [
+const pub_ips: string[] = [
   '44.37.112.180',
   '46.192.247.73',
   '71.12.102.112',
@@ -35,7 +35,7 @@ const pub_ips = [
   'fec0::'
 ]
 
-const priv_ips = [
+const priv_ips: string[] = [
   '0.0.0.0',
   '0000.0000.0000.0000',
   '0000.0000',
@@ -174,14 +174,14 @@ const priv_ips = [
   '0x7f000001',
 ]
 
-const invalid_ips = [
+const invalid_ips: string[] = [
   '100::ffff::',
   '::ffff:0.0.255.255.255',
   '::ffff:0.255.255.255.255',
 ]
 
-pub_ips.forEach(ip_addr => test(`IP ${ip_addr.toString()} should be public`, t => t.false(is_ip_private(ip_addr))))
+pub_ips.forEach(ip_addr => test(`IP ${ip_addr} should be public`, t => t.false(is_ip_private(ip_addr))))
 
-priv_ips.forEach(ip_addr => test(`IP ${ip_addr.toString()} should be private`, t => t.true(is_ip_private(ip_addr))))
+priv_ips.forEach(ip_addr => test(`IP ${ip_addr} should be private`, t => t.true(is_ip_private(ip_addr))))
 
-invalid_ips.forEach(ip_addr => test(`IP ${ip_addr.toString()} should be undefined`, t => t.is(is_ip_private(ip_addr), undefined)))
+invalid_ips.forEach(ip_addr => test(`IP ${ip_addr} should be undefined`, t => t.is(is_ip_private(ip_addr), undefined)))

@@ -38,10 +38,11 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "npm run clean && ./node_modules/typescript/bin/tsc --outDir lib",
-    "clean": "./node_modules/.bin/rimraf ./lib",
+    "clean": "rimraf --glob ./lib",
+    "build": "npm run clean && tsc --outDir lib",
     "test": "npm run build && ava",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build",
+    "release": "npm run build && npm publish --provenance --access public"
   },
   "keywords": [
     "ip",
@@ -67,5 +68,8 @@
   },
   "engines": {
     "node": ">=14.16"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
