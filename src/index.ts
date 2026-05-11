@@ -27,6 +27,7 @@ const PRIVATE_IP_RANGES = [
   '198.18.0.0/15',
   '198.51.100.0/24',
   '203.0.113.0/24',
+  '224.0.0.0/4',
   '240.0.0.0/4',
   '255.255.255.255/32'
 ]
@@ -34,7 +35,7 @@ const PRIVATE_IP_RANGES = [
 const NETMASK_RANGES = PRIVATE_IP_RANGES.map(ip_range => new Netmask(ip_range))
 
 function ipv4_check (ip_addr: string) {
-  for (let r of NETMASK_RANGES) {
+  for (const r of NETMASK_RANGES) {
     if (r.contains(ip_addr)) return true
   }
 
