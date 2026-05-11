@@ -82,7 +82,6 @@
     "node": ">=18"
   },
   "pnpm": {
-    "onlyBuiltDependencies": [],
     "ignoredBuiltDependencies": [
       "esbuild"
     ]
