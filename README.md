@@ -7,7 +7,7 @@
   <a href="https://www.npmjs.com/package/@rockinchaos/private-ip"><img alt="Latest Release" src="https://img.shields.io/npm/v/@rockinchaos/private-ip.svg?style=flat-square"></a>
   <a href="https://github.com/RockinChaos/private-ip/commits"><img alt="Last Commit" src="https://img.shields.io/github/last-commit/RockinChaos/private-ip?style=flat-square"></a>
   <a href="https://github.com/RockinChaos/private-ip/stargazers"><img alt="Stargazers" src="https://img.shields.io/github/stars/RockinChaos/private-ip?style=flat-square"></a>
-  <a href="https://github.com/RockinChaos/private-ip/blob/master/LICENSE"><img alt="License: MIT" src="https://img.shields.io/github/license/RockinChaos/private-ip?style=flat-square"></a>
+  <a href="https://github.com/RockinChaos/private-ip/blob/main/LICENSE"><img alt="License: MIT" src="https://img.shields.io/github/license/RockinChaos/private-ip?style=flat-square"></a>
 </p>
 
 ## 📃 **About**
@@ -67,7 +67,7 @@ Original authors of [private-ip](https://github.com/frenchbread/private-ip):
 
 ## 📜 License
 
-This project follows the [MIT License](https://github.com/RockinChaos/private-ip/blob/master/LICENSE).
+This project follows the [MIT License](https://github.com/RockinChaos/private-ip/blob/main/LICENSE).
 
 ## 🔗 References
 
