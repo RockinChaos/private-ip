@@ -1,6 +1,6 @@
 {
-  "version": "3.0.2",
   "name": "@rockinchaos/private-ip",
+  "version": "3.1.0",
   "description": "Check if IP address is private.",
   "exports": {
     ".": {
@@ -78,8 +78,5 @@
   },
   "engines": {
     "node": ">=18"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }
