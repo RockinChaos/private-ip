@@ -1,4 +1,5 @@
 import test from 'ava'
+import ipaddr from 'ipaddr.js'
 import is_ip_private from '../index.js'
 
 const pub_ips: string[] = [
@@ -187,3 +188,58 @@ pub_ips.forEach(ip_addr => test(`IP ${ip_addr} should be public`, t => t.false(i
 priv_ips.forEach(ip_addr => test(`IP ${ip_addr} should be private`, t => t.true(is_ip_private(ip_addr))))
 
 invalid_ips.forEach(ip_addr => test(`IP ${ip_addr} should be undefined`, t => t.is(is_ip_private(ip_addr), undefined)))
+
+for (const [addresses, expected] of [[pub_ips, false], [priv_ips, true]] as const) {
+  for (const address of addresses.filter(ip => ip.includes(':'))) {
+    test(`Equivalent IPv6 spellings of ${address} retain classification`, t => {
+      const parsed = ipaddr.parse(address)
+      const normalized = parsed.toNormalizedString()
+      const padded = normalized.split(':').map(part => part.padStart(4, '0')).join(':')
+      for (const variant of [normalized, padded, padded.toUpperCase(), address.toUpperCase(), address + '%eth0', address + '%eth-0']) {
+        t.is(is_ip_private(variant), expected, variant)
+      }
+    })
+  }
+}
+
+for (const address of ['::ffff:0:127.0.0.1', '::ffff:0:7f00:1', '::ffff:8.8.8.8', '64:ff9b::808:808']) {
+  test(`Embedded IPv4 range ${address} remains private`, t => t.true(is_ip_private(address)))
+}
+
+for (const address of ['::2', '::fffe:ffff:ffff', '::1:0:0:0', '::fffe:ffff:ffff:ffff', '::ffff:1:0:0', '64:ff9b::1:0:0', '100:0:0:2::', '2001:1::', '2001:30::', '2003::', 'fe7f:ffff:ffff:ffff:ffff:ffff:ffff:ffff']) {
+  test(`IPv6 address outside private ranges ${address} remains public`, t => t.false(is_ip_private(address)))
+}
+
+for (const address of ['::ffff:999.0.0.1', '2001:db8::gggg', '::1/128', '::1 trailing', '[::1]', '']) {
+  test(`Malformed address ${JSON.stringify(address)} remains undefined`, t => t.is(is_ip_private(address), undefined))
+}
+
+
+const special_ipv6_ranges = [
+  ['64:ff9b:1::', '64:ff9b:1:ffff:ffff:ffff:ffff:ffff', '64:ff9b:0:ffff:ffff:ffff:ffff:ffff', '64:ff9b:2::'],
+  ['100:0:0:1::', '100:0:0:1:ffff:ffff:ffff:ffff', '100:0:0:0:ffff:ffff:ffff:ffff', '100:0:0:2::'],
+  ['2001:2::', '2001:2:0:ffff:ffff:ffff:ffff:ffff', '2001:1:ffff:ffff:ffff:ffff:ffff:ffff', '2001:2:1::'],
+  ['3fff::', '3fff:fff:ffff:ffff:ffff:ffff:ffff:ffff', '3ffe:ffff:ffff:ffff:ffff:ffff:ffff:ffff', '3fff:1000::'],
+  ['5f00::', '5f00:ffff:ffff:ffff:ffff:ffff:ffff:ffff', '5eff:ffff:ffff:ffff:ffff:ffff:ffff:ffff', '5f01::']
+]
+
+for (const [first, last, before, after] of special_ipv6_ranges) {
+  test(`Special-use IPv6 range starting at ${first} is private`, t => {
+    for (const address of [first, last]) {
+      const padded = ipaddr.parse(address).toNormalizedString().split(':').map(part => part.padStart(4, '0')).join(':')
+      for (const variant of [address, padded, padded.toUpperCase(), address + '%eth0', address + '%eth-0']) {
+        t.true(is_ip_private(variant), variant)
+      }
+    }
+    t.is(is_ip_private(before), first === '100:0:0:1::', before)
+    t.false(is_ip_private(after), after)
+  })
+}
+
+test('Local-use translation and benchmarking examples are private', t => {
+  t.true(is_ip_private('64:ff9b:1::127.0.0.1'))
+  t.true(is_ip_private('64:ff9b:1::7f00:1'))
+  t.true(is_ip_private('2001:2::1'))
+  t.true(is_ip_private('3fff::1'))
+  t.true(is_ip_private('5f00::1'))
+})

@@ -1,7 +1,8 @@
 import { Netmask } from 'netmask'
 import ip_regex from 'ip-regex'
 import { isIP } from '@chainsafe/is-ip'
-import ipaddr, { IPv4 } from 'ipaddr.js'
+import { parseIPv6 } from '@chainsafe/is-ip/parse'
+import ipaddr, { IPv4, IPv6 } from 'ipaddr.js'
 const { isValid: is_valid, parse } = ipaddr
 
 const PRIVATE_IP_RANGES = [
@@ -38,33 +39,42 @@ function ipv4_check (ip_addr: string) {
   for (const r of NETMASK_RANGES) {
     if (r.contains(ip_addr)) return true
   }
-
   return false
 }
 
-function ipv6_check (ip_addr: string) {
-  return /^::$/.test(ip_addr) ||
-    /^::1$/.test(ip_addr) ||
-    /^::f{4}:([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$/.test(ip_addr) ||
-    /^::f{4}:0.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$/.test(ip_addr) ||
-    /^64:ff9b::([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$/.test(ip_addr) ||
-    /^100::([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4})$/.test(ip_addr) ||
-    /^2001::([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4})$/.test(ip_addr) ||
-    /^2001:2[0-9a-fA-F]:([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4})$/.test(ip_addr) ||
-    /^2001:db8:([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4})$/.test(ip_addr) ||
-    /^2002:([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4}):?([0-9a-fA-F]{0,4})$/.test(ip_addr) ||
-    /^f[c-d]([0-9a-fA-F]{2,2}):/i.test(ip_addr) ||
-    /^fe[8-9a-bA-B][0-9a-fA-F]:/i.test(ip_addr) ||
-    /^ff([0-9a-fA-F]{2,2}):/i.test(ip_addr)
+const IPV6_RANGES = [
+  '::/128',
+  '::1/128',
+  '::ffff:0:0/96',
+  '::ffff:0:0:0/96',
+  '64:ff9b::/96',
+  '64:ff9b:1::/48',
+  '100::/64',
+  '100:0:0:1::/64',
+  '2001::/32',
+  '2001:2::/48',
+  '2001:20::/28',
+  '2001:db8::/32',
+  '2002::/16',
+  '3fff::/20',
+  '5f00::/16',
+  'fc00::/7',
+  'fe80::/10',
+  'ff00::/8'
+].map(ip_range => ipaddr.IPv6.parseCIDR(ip_range))
+
+function ipv6_check (ip_addr: IPv6) {
+  return IPV6_RANGES.some(range => ip_addr.match(range))
 }
 
 export default (ip: string): boolean | undefined => {
   if (is_valid(ip)) {
     const parsed = parse(ip)
-
     if (parsed.kind() === 'ipv4') return ipv4_check((parsed as IPv4).toNormalizedString())
-    else if (parsed.kind() === 'ipv6') return ipv6_check(ip)
-  } else if (isIP(ip) && ip_regex.v6().test(ip)) return ipv6_check(ip)
-
+    else if (parsed.kind() === 'ipv6') return ipv6_check(parsed as IPv6)
+  } else if (isIP(ip) && ip_regex.v6().test(ip)) {
+    const bytes = parseIPv6(ip)
+    if (bytes) return ipv6_check(ipaddr.fromByteArray(Array.from(bytes)) as IPv6)
+  }
   return undefined
 }
