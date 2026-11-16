@@ -16,10 +16,14 @@ A fork of [private-ip](https://github.com/frenchbread/private-ip) with security 
 
 ## ⚙️ Installation
 
+Using npm:
+
 ```bash
 npm install @rockinchaos/private-ip
 ```
-or 
+
+Using pnpm:
+
 ```bash
 pnpm add @rockinchaos/private-ip
 ```
@@ -38,12 +42,12 @@ is_ip_private('not.an.ip.com')  // => undefined
 
 ### 🐛 Tests
 ```bash
-npm run test
+pnpm test
 ```
 
 ### 📦 Build
 ```bash
-npm run build
+pnpm run build
 ```
 
 ## 🔒 Security

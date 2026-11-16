@@ -36,19 +36,15 @@
     {
       "name": "Aravindha Hariharan M",
       "url": "https://www.linkedin.com/in/aravindha1234u/"
-    },
-    {
-      "name": "RockinChaos",
-      "url": "https://github.com/RockinChaos"
     }
   ],
   "license": "MIT",
   "scripts": {
     "clean": "rimraf --glob ./lib",
-    "build": "npm run clean && tsc --outDir lib",
-    "test": "npm run build && ava",
-    "prepublishOnly": "npm run build",
-    "release": "npm publish --access public"
+    "build": "pnpm run clean && tsc --outDir lib",
+    "test": "pnpm run build && ava",
+    "prepublishOnly": "pnpm run build",
+    "release": "pnpm publish --access public"
   },
   "keywords": [
     "ip",
