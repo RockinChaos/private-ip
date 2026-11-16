@@ -1,6 +1,6 @@
 {
   "name": "@rockinchaos/private-ip",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "description": "Check if IP address is private.",
   "packageManager": "pnpm@12.17.0",
   "exports": {
@@ -22,13 +22,27 @@
   },
   "bugs": "https://github.com/RockinChaos/private-ip/issues",
   "homepage": "https://github.com/RockinChaos/private-ip#readme",
-  "authors": [
-    "Damir Mustafin <frenchthebread@gmail.com>",
-    "Sick.Codes <https://twitter.com/sickcodes>",
-    "John Jackson <https://twitter.com/johnjhacking>",
-    "Nick Sahler <https://twitter.com/tensor_bodega>"
-  ],
+  "author": {
+    "name": "RockinChaos",
+    "url": "https://github.com/RockinChaos"
+  },
   "contributors": [
+    {
+      "name": "Damir Mustafin",
+      "email": "frenchthebread@gmail.com"
+    },
+    {
+      "name": "Sick.Codes",
+      "url": "https://twitter.com/sickcodes"
+    },
+    {
+      "name": "John Jackson",
+      "url": "https://twitter.com/johnjhacking"
+    },
+    {
+      "name": "Nick Sahler",
+      "url": "https://twitter.com/tensor_bodega"
+    },
     {
       "name": "Harold Hunt",
       "url": "https://www.linkedin.com/in/huntharo/"
